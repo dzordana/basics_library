@@ -22,7 +22,8 @@ from django.urls import path, include
 urlpatterns = [
     path('', include('library.urls')),
     path('admin/', admin.site.urls),
-    path('tinymce/', include('tinymce.urls'))
+    path('tinymce/', include('tinymce.urls')),
+    path('i18n/', include('django.conf.urls.i18n')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [

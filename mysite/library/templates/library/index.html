@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% load i18n %}
 {% block title %}
 Welcome to Library!
 {% endblock %}
@@ -10,19 +10,19 @@ Welcome to Library!
 {% endblock %}
 
 {% block content %}
-<h1>Sveiki atvykę į mano biblioteką</h1>
-<h4>Šiuo metu bibliotekoje yra:</h4>
+<h1>{% trans "Local Library" %}</h1>
+<h4>{% trans "In library we have:" %}</h4>
 <ul>
-    <li>Knygų: {{num_books }}</li>
-    <li>Egzempliorių: {{ num_instances }}</li>
-    <li>Laisvų egzempliorių: {{ num_instances_available }}</li>
-    <li>Autorių: {{ num_authors }}</li>
+    <li><strong>{% trans "Books:" %}</strong> {{num_books }}</li>
+    <li><strong>{% trans "Book Copies:" %}</strong> {{ num_instances }}</li>
+    <li><strong>{% trans "Now Available:" %}</strong> {{ num_instances_available }}</li>
+    <li><strong>{% trans "Authors:" %} </strong> {{ num_authors }}</li>
 </ul>
 {% comment 'pavyzdys' %}
 
 {% endcomment %}
 
-<p>Jūs čia lankotės {{num_visits }}-ą kartą. </p>
+<p>{% trans "Your visits:" %} {{num_visits }}</p>
 
 {# vienos eilutės pavyzdys #}
 {% endblock %}

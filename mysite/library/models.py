@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from datetime import date
 from tinymce.models import HTMLField
 from PIL import Image
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class Genre(models.Model):
@@ -20,12 +21,12 @@ class Genre(models.Model):
 
 class Book(models.Model):
     """Modelis reprezentuojantis knygą"""
-    title = models.CharField('Pavadinimas', max_length=200)
+    title = models.CharField(_('Title'), max_length=200)
     author = models.ForeignKey('Author', max_length=200, null=True, on_delete=models.SET_NULL, related_name='books')
-    summary = models.TextField('Aprašymas', max_length=1000, help_text='Trumpas knygos aprašymas')
-    isbn = models.CharField('ISBN', max_length=13, help_text='13 simbolių unikalus ISBN kodas')
-    genre = models.ManyToManyField(Genre, help_text='Išsirinkite knygos žanrą(us)')
-    cover = models.ImageField('Viršelis', upload_to='covers', null=True)
+    summary = models.TextField(_('Summary'), max_length=1000, help_text=_('A short book description'))
+    isbn = models.CharField('ISBN', max_length=13, help_text=_('A unique 13 digits ISBN number'))
+    genre = models.ManyToManyField(Genre, help_text=_("Please select book's genre(s)"))
+    cover = models.ImageField(_('Cover'), upload_to='covers', null=True)
 
     def __str__(self):
         return self.title

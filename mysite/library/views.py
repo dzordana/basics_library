@@ -10,6 +10,7 @@ from django.contrib.auth.forms import User
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.utils.translation import gettext as _
 
 # Create your views here.
 
@@ -120,17 +121,17 @@ def register(request):
         password2 = request.POST['password2']
         if password == password2:
             if User.objects.filter(username=username).exists():
-                messages.error(request, f'Vartotojas {username} jau užimtas!')
+                messages.error(request, _('Username %s already exists!') % username)
                 return redirect('register')
             else:
                 if User.objects.filter(email=email).exists():
-                    messages.error(request, f'Vartotojas su el.paštu {email} jau egizstuoja!')
+                    messages.error(request, _('Username with %s already exists!') % email)
                     return redirect('register')
                 else:
                     User.objects.create_user(username=username, email=email, password=password)
                     return render(request, 'library/welcome.html')
         else:
-            messages.error(request, 'Slaptažodžiai nesutampa!')
+            messages.error(request, _('Passwords do no match!'))
             return redirect('register')
     return render(request, 'library/register.html')
 
