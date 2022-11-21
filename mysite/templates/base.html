@@ -43,6 +43,9 @@
               <a class="nav-link text-secondary" href="{% url 'my-borrowed' %}">{% trans "My Books" %}</a>
           </li>
           <li class="nav-item">
+              <a class="nav-link text-secondary" href="{% url 'my-new-book' %}?next=/library">Pridėti </a>
+          </li>
+          <li class="nav-item">
               <a class="nav-link text-secondary" href="{% url 'logout' %}?next=/ ">{% trans "Logout" %}</a>
           </li>
                 {% else %}
@@ -54,7 +57,6 @@
           </li>
           {% endif %}
       </ul>
-                    {% load i18n %}
               <form action="{% url 'set_language' %}" method="post">
                   {% csrf_token %}
                   <input name="next" type="hidden" value="{{redirect_to}}"/>

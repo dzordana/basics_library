@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import FormMixin
-from .forms import BookReviewForm, UserUpdateForm, ProfilisUpdateForm
+from .forms import BookReviewForm, UserUpdateForm, ProfilisUpdateForm, UserBookInstanceCreateForm
 from .models import Book, BookInstance, Author
 from django.contrib.auth.forms import User
 from django.views.decorators.csrf import csrf_protect
@@ -106,10 +106,26 @@ def search(request):
 class LoanBooksListView(LoginRequiredMixin, generic.ListView):
     model = BookInstance
     template_name = 'library/user_books.html'
+    context_object_name = 'mybooks'
 
     def get_queryset(self):
         return BookInstance.objects.filter(reader=self.request.user).filter(status__exact='p').order_by('due_back')
+class BookByUserDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Book
+    template_name = 'library/user_book.html'
 
+class BookByUserCreateView(LoginRequiredMixin, generic.CreateView):
+    model = BookInstance
+    # fields = ['book', 'due_back']
+    success_url = '/mybooks/'
+    template_name = 'library/user_book_form.html'
+    form_class = UserBookInstanceCreateForm
+
+    def form_valid(self, form):
+        form.instance.reader = self.request.user
+        form.instance.status = 'p'
+        form.save()
+        return super().form_valid(form)
 
 @csrf_protect
 def register(request):

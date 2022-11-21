@@ -1,4 +1,4 @@
-from .models import BookReview, Profilis
+from .models import BookReview, Profilis, BookInstance
 from django import forms
 from django.contrib.auth.models import User
 
@@ -20,3 +20,11 @@ class ProfilisUpdateForm(forms.ModelForm):
     class Meta:
         model = Profilis
         fields = ['nuotrauka']
+
+
+class UserBookInstanceCreateForm(forms.ModelForm):
+    class Meta:
+        model = BookInstance
+        fields = ['book', 'due_back', 'reader']
+        widgets = {'reader': forms.HiddenInput()}
+

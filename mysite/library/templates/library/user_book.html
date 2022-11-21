@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Mano paimta knyga: </h1>
+<hr>
+<ul>
+  <img src="{{ object.cover.url }}">
+  <li><strong class="{% if object.is_overdue %} text-danger {% endif %}">Pavadinimas:</strong> {{object.title}}</li>
+  {# <li><strong>Grąžinimo terminas: {{object.due_back}}</strong></li> #}
+</ul>
+{% endblock %}

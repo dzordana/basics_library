@@ -31,10 +31,6 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
-    def get_absolute_url(self):
-        """Nurodo konkretaus knygos aprašymo galutinį adresą"""
-        return reverse('book_detail', args=[str(self.id)])
-
     def display_genre(self):
         return ','.join(genre.name for genre in self.genre.all()[:3])
 
@@ -52,7 +48,7 @@ class BookInstance(models.Model):
         ('r', 'Rezervuota')
     )
 
-    status = models.CharField(max_length=1, choices=LOAN_STATUS, default='a', help_text='Statusas', blank=True)
+    status = models.CharField(max_length=1, choices=LOAN_STATUS, default='p', help_text='Statusas', blank=True)
 
     class Meta:
         ordering = ['due_back']
@@ -66,6 +62,9 @@ class BookInstance(models.Model):
     def __str__(self):
         return f'{self.id} {self.book.title}'
 
+    def get_absolute_url(self):
+        return reverse('book_detail', args=[str(self.id)])
+
 class Author(models.Model):
     """Modelis reprezentuojantis knygos autorių."""
     first_name = models.CharField('Vardas', max_length=80)
@@ -76,7 +75,7 @@ class Author(models.Model):
 
     def get_absolute_url(self):
         """Nurodo konkretaus autoriaus galutinį adresą"""
-        return reverse('author-detail', args=[str(self.id)])
+        return reverse('author', args=[str(self.id)])
 
     def __str__(self):
         return f'{self.last_name} {self.first_name}'
