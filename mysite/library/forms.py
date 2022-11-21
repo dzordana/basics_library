@@ -21,10 +21,14 @@ class ProfilisUpdateForm(forms.ModelForm):
         model = Profilis
         fields = ['nuotrauka']
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
 
 class UserBookInstanceCreateForm(forms.ModelForm):
     class Meta:
         model = BookInstance
         fields = ['book', 'due_back', 'reader']
-        widgets = {'reader': forms.HiddenInput()}
+        widgets = {'reader': forms.HiddenInput(), 'due_back':DateInput()}
+
+
 

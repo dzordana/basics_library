@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import FormMixin
 from .forms import BookReviewForm, UserUpdateForm, ProfilisUpdateForm, UserBookInstanceCreateForm
 from .models import Book, BookInstance, Author
@@ -95,8 +95,6 @@ def author(request, author_id):
 def search(request):
     query = request.GET.get('query')
     lt_letters = {'ž': 'z', 'š': 's', 'į':'i'}
-    # 1. Loop through query
-    # query = ''
     for raide in query:
        if raide in lt_letters.keys():
            print(lt_letters[raide])
@@ -111,7 +109,7 @@ class LoanBooksListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         return BookInstance.objects.filter(reader=self.request.user).filter(status__exact='p').order_by('due_back')
 class BookByUserDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Book
+    model = BookInstance
     template_name = 'library/user_book.html'
 
 class BookByUserCreateView(LoginRequiredMixin, generic.CreateView):
@@ -171,3 +169,27 @@ def profilis(request):
         'p_form': p_form
     }
     return render(request, 'library/profilis.html', context)
+
+class BookByUserUpdateView(LoginRequiredMixin, generic.UpdateView, UserPassesTestMixin):
+    model = BookInstance
+    fields = ['book', 'due_back']
+    success_url = '/mybooks/'
+    template_name = 'library/user_book_form.html'
+
+    def form_valid(self, form):
+        form.instance.reader = self.request.user
+        form.save()
+        return super().form_valid(form)
+    def test_func(self):
+        book = self.get_object()
+        return self.request.user == book.reader
+
+class BookByUserDeleteView(generic.DeleteView, LoginRequiredMixin, UserPassesTestMixin):
+    model = BookInstance
+    success_url = '/mybooks/'
+    template_name = 'library/userbook_delete.html'
+    context_object_name = 'instance'
+
+    def test_func(self):
+        book_instance = self.get_object()
+        return book_instance.reader == self.request.user

@@ -4,21 +4,21 @@ from . models import Genre, Book, BookInstance, Author, BookReview, Profilis
 # Register your models here.
 
 class BookInstanceAdmin(admin.ModelAdmin):
-    list_display = ('book', 'status', 'reader', 'due_back', 'id')
+    list_display = ('book', 'status', 'reader', 'due_back', 'uuid')
     # pridėti redaguotinus laukus
     list_filter = ('status', 'due_back')
     list_editable = ('due_back', 'status')
     # pridėti paiešką
-    search_fields = ('id', 'book__title')
+    search_fields = ('uuid', 'book__title')
 
     fieldsets = (
-        (None, {'fields': ('id', 'book')}),
+        (None, {'fields': ('uuid', 'book')}),
         ('Availability', {'fields': ('status', 'due_back', 'reader')}),
     )
 
 class BooksInstanceInline(admin.TabularInline):
     model = BookInstance
-    readonly_fields = ('id',)
+    readonly_fields = ('uuid',)
     can_delete = False
     extra = 0 # išjungia placeholder'ius
 

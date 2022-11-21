@@ -16,9 +16,9 @@ Mano knygos
 <ul>
     {% for bookinst in mybooks %}
     {#<img class="rounded-circle" src="{{bookinst.reader.profilis.nuotrauka.url }}">#}
-    <li><strong class="{% if bookinst.is_overdue %} text-danger {% endif %}">Pavadinimas: </strong>{{bookinst.book.title}}</li>
-    <li><strong>Grąžinimo terminas: </strong>{{bookinst.due_back}}</li>
-    <a class="btn btn-primary" href="{{ bookinst.book.id}}" role="button">Peržiūrėti</a>
+    <li><strong>Pavadinimas: </strong>{{bookinst.book.title}}</li>
+    <li><strong class="{% if bookinst.is_overdue %} text-danger {% endif %}">Grąžinimo terminas: {{bookinst.due_back}}</strong></li>
+    <a class="btn btn-primary" href="{{ bookinst.id}}" role="button">Peržiūrėti</a>
     <br><br>
     {% endfor %}
 </ul>

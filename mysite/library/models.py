@@ -18,7 +18,6 @@ class Genre(models.Model):
         verbose_name = 'Žanras'
         verbose_name_plural = 'Žanrai'
 
-
 class Book(models.Model):
     """Modelis reprezentuojantis knygą"""
     title = models.CharField(_('Title'), max_length=200)
@@ -36,7 +35,7 @@ class Book(models.Model):
 
 class BookInstance(models.Model):
     """Modelis aprašantis konkrečios knygos kopijos būseną"""
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unikalus ID knygos kopijai')
+    uuid = models.UUIDField(default=uuid.uuid4, help_text='Unikalus ID knygos kopijai')
     book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True)
     due_back = models.DateField('Bus prieinama', null=True, blank=True)
     reader = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
@@ -62,8 +61,8 @@ class BookInstance(models.Model):
     def __str__(self):
         return f'{self.id} {self.book.title}'
 
-    def get_absolute_url(self):
-        return reverse('book_detail', args=[str(self.id)])
+    # def get_absolute_url(self):
+    #     return reverse('book_detail', args=[str(self.id)])
 
 class Author(models.Model):
     """Modelis reprezentuojantis knygos autorių."""
